@@ -5,4 +5,4 @@ class SimpleGuestForm(forms.ModelForm):
 
     class Meta:
         model = SimpleGuest
-        fields = ('simple_guest_name',)
+        fields = ('simple_guest_name', 'simple_guest_id', 'simple_guest_created_date',)
