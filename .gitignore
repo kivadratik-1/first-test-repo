@@ -1,0 +1,13 @@
+*.pyc
+*~
+__pycache__
+Djangovenv
+db.sqlite3
+/static
+.DS_Store
+.bash_history
+.bash_logout
+.bashrc
+.cache/mc/Tree
+.cache/pip/*
+.config/*
