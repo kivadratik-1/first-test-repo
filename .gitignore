@@ -11,3 +11,11 @@ db.sqlite3
 .cache/mc/Tree
 .cache/pip/*
 .config/*
+.local/share/mc/history
+.gitconfig
+.gitignore
+.local/share/mc/history
+.nano/search_history
+.profile
+.selected_editor
+

@@ -4,6 +4,10 @@
     </head>
     <body>
         <p>Hi there!</p>
+	{% for simple_guest_user in simple_guest %}
+		<p></p>
+    		{{ simple_guest_user }}
+	{% endfor %}
         <p>It works!</p>
     </body>
 </html>
