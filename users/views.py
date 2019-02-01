@@ -6,7 +6,8 @@ from .forms import SimpleGuestForm
 # Create your views here.
 def guest_list(request):
     simple_guest = SimpleGuest.objects.order_by('-simple_guest_id')[:5]
-    return render(request, 'users/guest_list.html', {'simple_guest':simple_guest})
+    new_guest = SimpleGuest.objects.order_by('-simple_guest_id')[:1]
+    return render(request, 'users/guest_list.html', {'simple_guest':simple_guest, 'new_guest':new_guest})
 
 #def guest_new(request):
 #    form = SimpleGuestForm()

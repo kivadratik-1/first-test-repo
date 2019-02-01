@@ -31,3 +31,5 @@ class SimpleGuest(models.Model):
     def __str__(self):
         return str(self.simple_guest_name)
 
+    def get_name(self):
+        return str(self.simple_guest_name)

@@ -3,11 +3,15 @@
         <title>Ilya's test project for Provectus</title>
     </head>
     <body>
-        <p>Hi there!</p>
+        <p>Hi!
+	{% for new_guest_user in new_guest %}
+                {{ new_guest_user }}
+        {% endfor %}
+         </p>
+        <p>The list of last Guests:</p>
 	{% for simple_guest_user in simple_guest %}
 		<p></p>
     		{{ simple_guest_user }}
 	{% endfor %}
-        <p>It works!</p>
     </body>
 </html>
