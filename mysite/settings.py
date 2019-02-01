@@ -26,7 +26,7 @@ SECRET_KEY = '6_wy&%=wc%#g#17&&x+lpaimwp9-!m^sw=(gb%-!$@x8nn@86x'
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['192.168.2.210', 'lavrik.python.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'lavrik.python.com']
 
 # Application definition
 
