@@ -18,7 +18,7 @@ class Guest(models.Model):
         return str(self.guestname)
 
 class SimpleGuest(models.Model):
-    simple_guest_name = models.CharField(max_length=200)
+    simple_guest_name = models.CharField(max_length=200, verbose_name='Впиши сюда свое имя:')
     simple_guest_id = models.AutoField(primary_key=True)
     simple_guest_created_date = models.DateTimeField(
             default=timezone.now)
