@@ -1,6 +1,6 @@
 """
 
-#Some new 2
+#Some new 3
 
 Django settings for mysite project.
 
