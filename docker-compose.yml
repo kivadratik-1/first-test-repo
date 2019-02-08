@@ -4,9 +4,3 @@ services:
     build: .
     ports:
      - "80:8000"
-#    volumes:
-#     - .
-#    depends_on:
-#     - redis
-#  redis:
-#    image: redis
