@@ -1,5 +1,5 @@
 # our base image
-FROM sha256:2cac85eb6545f29f1c5e61e0d7f00b862bc5db869d2367eba2d5c7482f838dc2
+FROM sha256:07eaeb9e87f1640d341eaca076336eeded7ab4a9a1478faf216c4ce481a1810e
 
 # specify the port number the container should expose
 EXPOSE 8000/tcp
