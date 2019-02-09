@@ -12,8 +12,12 @@ WORKDIR /home
 # copy latest local files
 COPY . .
 
+VOLUME /home/db
 
 # run the application
 # CMD ["python3", "./test-mqtt-sender.py"]
 #CMD []
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python3", "manage.py", "makemigrations"]
+CMD ["python3", "manage.py", "migrate"]
+
