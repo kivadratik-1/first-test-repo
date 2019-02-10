@@ -89,8 +89,8 @@ pipeline {
                 sh "${SSH_CMD_AWS} 'sudo docker ps -a -q | xargs -r sudo docker stop'"
                 sh "${SSH_CMD_AWS} 'sudo docker ps -a -q | xargs -r sudo docker rm'"
                 sh "${SSH_CMD_AWS} 'sudo docker volume prune --force'"
-                sh "${SSH_CMD_AWS} 'sudo docker-compose -f prod_docker-compose.yml pull'"
-                sh "${SSH_CMD_AWS} 'sudo docker-compose -f prod_docker-compose.yml up -d'"
+                sh "${SSH_CMD_AWS} 'sudo docker-compose -f aws_docker-compose.yml pull'"
+                sh "${SSH_CMD_AWS} 'sudo docker-compose -f aws_docker-compose.yml up -d'"
                 sh "${SSH_CMD_AWS} 'sudo docker image prune -a --force'"
             }
         }
