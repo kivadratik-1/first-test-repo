@@ -77,7 +77,7 @@ pipeline {
                 script {
                     SSH_CMD = "sshpass -p '${SSH_CREDS_PSW}' ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_CREDS_USR}@${SSH_HOST}"
                 }
-                sh "sudo tar -czf deployment.tar.gz prod_docker-compose.yml"
+                sh "tar -czf deployment.tar.gz prod_docker-compose.yml"
                 sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
                 sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
                 sh "${SSH_CMD} 'docker-compose pull -f prod_docker-compose.yml'"
