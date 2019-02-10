@@ -59,7 +59,7 @@ pipeline {
                     dockerVersionTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:${BUILD_VERSION}"
                     dockerLatestTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:latest"
                 }
-                  sh "echo 'dockerVersionTag'"
+                  sh "echo '${dockerLatestTag}'"
        //         sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerLatestTag}"
       //          sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerVersionTag}"
       //         sh "echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
