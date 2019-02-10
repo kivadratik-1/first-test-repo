@@ -1,7 +1,7 @@
 version: '2'
+image: my_custom_wildfly_image
+container_name: web
 services:
-  image: my_custom_wildfly_image
-  container_name: web
   web:
     build: .
     ports:
