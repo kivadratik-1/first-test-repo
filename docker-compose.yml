@@ -1,6 +1,5 @@
 version: '2'
 services:
-  container_name: web
   web:
     build: .
     ports:
