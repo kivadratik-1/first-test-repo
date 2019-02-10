@@ -65,7 +65,7 @@ pipeline {
       //         sh "echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
        //         sh "sudo docker push ${dockerVersionTag}"
       //          sh "sudo docker push ${dockerLatestTag}"
-       //     }
+            }
         }
         //stage('update prod server'){
         //    steps {
