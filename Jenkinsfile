@@ -67,8 +67,8 @@ pipeline {
                   sh "docker tag ${IMAGE_NAME} ${dockerLatestTag}"
                   sh "docker tag ${IMAGE_NAME} ${dockerVersionTag}"
                   sh "echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
-       //         sh "sudo docker push ${dockerVersionTag}"
-      //          sh "sudo docker push ${dockerLatestTag}"
+                  sh "docker push ${dockerVersionTag}"
+                  sh "docker push ${dockerLatestTag}"
             }
         }
         //stage('update prod server'){
