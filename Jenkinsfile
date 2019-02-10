@@ -21,8 +21,9 @@ pipeline {
         stage('clear all containers') {
             steps {
 				sh "echo 'I will clean all containers'"
-				sh "docker stop `docker ps | grep gitpull_web | awk '{print $1}'` & docker rm `docker ps -a | grep gitpull_web | awk '{print $1}'`"
-                // sh "sudo docker ps -a -q | xargs -r sudo docker stop"
+				//sh "docker stop `docker ps | grep gitpull_web | awk '{print $1}'` & docker rm `docker ps -a | grep gitpull_web | awk '{print $1}'`"
+                sh '(docker stop gitpull_web_1 && docker rm gitpull_web_1) || echo "No such container"'
+				// sh "sudo docker ps -a -q | xargs -r sudo docker stop"
                 // sh "sudo     docker ps -a -q | xargs -r sudo docker rm"
                 // sh 'sudo docker images | grep -v "postgres\\|python\\|nginx" | awk \'{print $3}\' | grep -v \'IMAGE\' | xargs -r sudo docker rmi --force'
                 // sh "sudo docker volume prune --force"
