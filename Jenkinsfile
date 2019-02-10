@@ -4,7 +4,8 @@ pipeline {
         // dockerhub config
         HUB_DOCKER_HOST ='https://index.docker.io/v1/'
         HUB_DOCKER_CREDS = credentials('b767963b-c7f6-4274-bccd-e98028d9ace3')
-        IMAGE_NAME = 'gitpull_web_1'
+        IMAGE_NAME = 'gitpull_web'
+        CONTAINER_NAME = 'gitpull_web_1'
         NAM = 'kivadratik/test'
         
         // git config
@@ -24,7 +25,7 @@ pipeline {
             steps {
 				sh "echo 'I will clean all containers'"
 				//sh "docker stop `docker ps | grep gitpull_web | awk '{print $1}'` & docker rm `docker ps -a | grep gitpull_web | awk '{print $1}'`"
-                sh '(docker stop ${IMAGE_NAME} && docker rm ${IMAGE_NAME}) || echo "No such container"'
+                sh '(docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}) || echo "No such container"'
 				// sh "sudo docker ps -a -q | xargs -r sudo docker stop"
                 // sh "sudo     docker ps -a -q | xargs -r sudo docker rm"
                 // sh 'sudo docker images | grep -v "postgres\\|python\\|nginx" | awk \'{print $3}\' | grep -v \'IMAGE\' | xargs -r sudo docker rmi --force'
@@ -44,7 +45,7 @@ pipeline {
         stage('test and preparing') {
             steps {
                 sh "echo 'I will test'"
-                sh "docker exec ${IMAGE_NAME} bash -c 'python manage.py test'"
+                sh "docker exec ${CONTAINER_NAME} bash -c 'python manage.py test'"
             }
             post {
                 always {
