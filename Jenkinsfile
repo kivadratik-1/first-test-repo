@@ -5,6 +5,7 @@ pipeline {
         HUB_DOCKER_HOST ='https://index.docker.io/v1/'
         HUB_DOCKER_CREDS = credentials('b767963b-c7f6-4274-bccd-e98028d9ace3')
         IMAGE_NAME = 'gitpull_web_1'
+        HUB_DOCKER_NM = 'kivadratik/test'
         
         // git config
        //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
@@ -16,6 +17,7 @@ pipeline {
         //SSH_PORT = "22"
         //SSH_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
 
+        
     }
     stages {
         stage('clear all containers') {
@@ -42,7 +44,7 @@ pipeline {
         stage('test and preparing') {
             steps {
                 sh "echo 'I will test'"
-                sh "docker exec gitpull_web_1 bash -c 'python manage.py test'"
+                sh "docker exec ${IMAGE_NAME} bash -c 'python manage.py test'"
             }
             post {
                 always {
@@ -56,13 +58,14 @@ pipeline {
         stage('docker tag and push') {
             steps {
                 script {
-                    dockerVersionTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:${BUILD_VERSION}"
-                    dockerLatestTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:latest"
+                    dockerVersionTag = "${HUB_DOCKER_NM}/${IMAGE_NAME}:${BUILD_VERSION}"
+                    dockerLatestTag = "${HUB_DOCKER_NM}/${IMAGE_NAME}:latest"
                 }
                   sh "echo '${dockerLatestTag}'"
-       //         sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerLatestTag}"
-      //          sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerVersionTag}"
-      //         sh "echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
+                  sh "echo '${dockerVersionTag}'" 
+                  sh "docker tag ${HUB_DOCKER_NM}/${IMAGE_NAME} ${dockerLatestTag}"
+                  sh "docker tag ${HUB_DOCKER_NM}/${IMAGE_NAME} ${dockerVersionTag}"
+                  sh "echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
        //         sh "sudo docker push ${dockerVersionTag}"
       //          sh "sudo docker push ${dockerLatestTag}"
             }
