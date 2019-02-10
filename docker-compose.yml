@@ -1,5 +1,4 @@
 version: '2'
-image: my_custom_wildfly_image
 container_name: web
 services:
   web:
