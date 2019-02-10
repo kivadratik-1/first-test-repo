@@ -80,8 +80,11 @@ pipeline {
                 sh "tar -czf deployment.tar.gz prod_docker-compose.yml"
                 sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
                 sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
-                sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
-		        sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml up -d'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker stop'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker rm'"
+                sh "${SSH_CMD} 'sudo docker volume prune --force'"
+		        sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
+                sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml up -d'"
 	   		    sh "${SSH_CMD} 'docker image prune -a --force'"
             }
         }
