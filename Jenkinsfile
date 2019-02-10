@@ -17,7 +17,7 @@ pipeline {
         // aws test config
 		AWS_HOST = "18.224.38.108"
 		AWS_PORT = "22"
-		AWS_T2MICRO_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
+		//AWS_T2MICRO_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
 		AWS_USER = 'admin'
 		
     }
