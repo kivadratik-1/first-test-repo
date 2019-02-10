@@ -7,11 +7,6 @@ pipeline {
         TAGGED_NAME = 'gitpull_web' 
         IMAGE_NAME = 'test_webapp'
         CONTAINER_NAME = 'gitpull_web_1'
-        NAM = 'kivadratik'
-        
-        // git config
-       //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
-       // GITHUB_CREDS = credentials('8be32b57-7a12-41c1-a21a-b4c5507392c9')
         BUILD_VERSION = sh(returnStdout: true, script: 'git describe --long --always').trim()
 
         // ssh prod config
@@ -19,28 +14,24 @@ pipeline {
         SSH_PORT = "22"
         SSH_CREDS = credentials('6835ab31-5ba5-4a93-814b-6713e4b4160a')
 
-        
+        // aws test config
+		AWS_HOST = "18.224.38.108"
+		AWS_PORT = "22"
+		AWS_T2MICRO_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
+		AWS_USER = 'admin'
+		
     }
     stages {
         stage('clear all containers') {
             steps {
-				sh "echo 'I will clean all containers'"
-				//sh "docker stop `docker ps | grep gitpull_web | awk '{print $1}'` & docker rm `docker ps -a | grep gitpull_web | awk '{print $1}'`"
+                sh "echo 'I will clean all containers'"
                 sh '(docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}) || echo "No such container"'
-				// sh "sudo docker ps -a -q | xargs -r sudo docker stop"
-                // sh "sudo     docker ps -a -q | xargs -r sudo docker rm"
-                // sh 'sudo docker images | grep -v "postgres\\|python\\|nginx" | awk \'{print $3}\' | grep -v \'IMAGE\' | xargs -r sudo docker rmi --force'
-                // sh "sudo docker volume prune --force"
             }
         }
         stage('build') {
             steps {
-                sh "pwd"
-                //sh "ls -l ../.."
-                //sh "pwd"
                 sh "docker-compose -f ../git-pull/docker-compose.yml up -d --build"
                 sh "docker images"
-                
             }
         }
         stage('test and preparing') {
@@ -50,7 +41,7 @@ pipeline {
             }
             post {
                 always {
-				    sh "echo 'I will copy'"
+                sh "echo 'I will copy'"
                     //sh "sudo docker cp swish-engine-app:/var/www/swish-engine-app/nosetests.xml nosetests.xml"
                     // junit '**/nosetests.xml'
                 }
@@ -60,8 +51,8 @@ pipeline {
         stage('docker tag and push') {
             steps {
                 script {
-                    dockerVersionTag = "${NAM}/${IMAGE_NAME}:${BUILD_VERSION}"
-                    dockerLatestTag = "${NAM}/${IMAGE_NAME}:latest"
+                    dockerVersionTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:${BUILD_VERSION}"
+                    dockerLatestTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:latest"
                 }
                   sh "echo '${dockerLatestTag}'"
                   sh "echo '${dockerVersionTag}'" 
@@ -83,19 +74,26 @@ pipeline {
                 sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker stop'"
                 sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker rm'"
                 sh "${SSH_CMD} 'sudo docker volume prune --force'"
-		        sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
+                sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
                 sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml up -d'"
-	   		    sh "${SSH_CMD} 'docker image prune -a --force'"
+                sh "${SSH_CMD} 'docker image prune -a --force'"
             }
         }
-
-    //}
-    //post {
-    //    failure {
-    //        sh "${CURL_CMD} '${NOTIFY_CMD}FAIL!  swish-engine-app   ${BUILD_VERSION}'"
-    //    }
-    //    success {
-    //        sh "${CURL_CMD} '${NOTIFY_CMD}OK!  swish-engine-app   ${BUILD_VERSION}'"
-    //    }
+        stage('update AWS server'){
+            steps {
+                script {
+                    SSH_CMD = "ssh -p ${AWS_PORT} ${AWS_USER}@${AWS_HOST}"
+                }
+                sh "tar -czf deployment.tar.gz aws_docker-compose.yml"
+                sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
+                sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker stop'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker rm'"
+                sh "${SSH_CMD} 'sudo docker volume prune --force'"
+                sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
+                sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml up -d'"
+                sh "${SSH_CMD} 'docker image prune -a --force'"
+            }
+        }
     }
 }
