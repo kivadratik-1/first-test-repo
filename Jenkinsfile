@@ -3,7 +3,6 @@ pipeline {
     environment {
         // dockerhub config
         HUB_DOCKER_HOST ='https://index.docker.io/v1/'
-        //HUB_DOCKER_HOST ='https://cloud.docker.com/repository/docker/kivadratik/test'
         HUB_DOCKER_CREDS = credentials('b767963b-c7f6-4274-bccd-e98028d9ace3')
         TAGGED_NAME = 'gitpull_web' 
         IMAGE_NAME = 'test_webapp'
@@ -13,12 +12,12 @@ pipeline {
         // git config
        //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
        // GITHUB_CREDS = credentials('8be32b57-7a12-41c1-a21a-b4c5507392c9')
-       BUILD_VERSION = sh(returnStdout: true, script: 'git describe --long --always').trim()
+        BUILD_VERSION = sh(returnStdout: true, script: 'git describe --long --always').trim()
 
         // ssh prod config
-        //SSH_HOST = "18.224.38.108"
-        //SSH_PORT = "22"
-        //SSH_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
+        SSH_HOST = "192.168.2.21"
+        SSH_PORT = "22"
+        SSH_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
 
         
     }
@@ -73,17 +72,17 @@ pipeline {
                   sh "docker push ${dockerLatestTag}"
             }
         }
-        //stage('update prod server'){
-        //    steps {
-        //        script {
-        //            SSH_CMD = "sshpass -p '${SSH_CREDS_PSW}' ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_CREDS_USR}@${SSH_HOST}"
-        //        }
-        //        sh "sudo tar -czf deployment.tar.gz ./deployment"
-        //        sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
-        //        sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
-        //        sh "${SSH_CMD} 'cd ~/dployment/prod/ && sudo docker-compose pull'"
-		//		  sh "${SSH_CMD} 'cd ~/deployment/prod/ && sudo docker-compose up -d'"
-		//		  sh "${SSH_CMD} 'sudo docker image prune -a --force'"
+        stage('update prod server'){
+            steps {
+                script {
+                    SSH_CMD = "sshpass -p '${SSH_CREDS_PSW}' ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_CREDS_USR}@${SSH_HOST}"
+                }
+                sh "sudo tar -czf deployment.tar.gz prod_docker-compose.yml"
+                sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
+                sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
+                sh "${SSH_CMD} 'docker-compose pull -f prod_docker-compose.yml'"
+		        sh "${SSH_CMD} 'docker-compose up -f prod_docker-compose.yml -d'"
+	   		    //sh "${SSH_CMD} 'sudo docker image prune -a --force'"
         //    }
         //}
 
