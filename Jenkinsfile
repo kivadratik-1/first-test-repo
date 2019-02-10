@@ -38,13 +38,6 @@ pipeline {
                 sh "echo 'I will test'"
                 sh "docker exec ${CONTAINER_NAME} bash -c 'python manage.py test'"
             }
-            post {
-                always {
-                sh "echo 'I will copy'"
-                    //sh "sudo docker cp swish-engine-app:/var/www/swish-engine-app/nosetests.xml nosetests.xml"
-                    // junit '**/nosetests.xml'
-                }
-            }
         }
 
         stage('docker tag and push') {
