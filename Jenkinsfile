@@ -42,7 +42,7 @@ pipeline {
         stage('test and preparing') {
             steps {
                 sh "echo 'I will test'"
-                //sh "sudo docker exec test-app-jenkins bash -c 'python manage.py test --with-xunit'"
+                sh "docker exec gitpull_web_1 bash -c 'python manage.py test'"
             }
             post {
                 always {
