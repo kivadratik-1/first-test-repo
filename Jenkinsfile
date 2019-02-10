@@ -3,7 +3,7 @@ pipeline {
     environment {
         // dockerhub config
         HUB_DOCKER_HOST ='https://index.docker.io/v1/'
-        HUB_DOCKER_CREDS = credentials('9febe439-9a0f-4947-b972-4b79e1a5dd89')
+        HUB_DOCKER_CREDS = credentials('b767963b-c7f6-4274-bccd-e98028d9ace3')
         IMAGE_NAME = 'gitpull_web_1'
         
         // git config
