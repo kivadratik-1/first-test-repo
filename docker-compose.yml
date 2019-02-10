@@ -1,6 +1,6 @@
 version: '2'
-container_name: web
 services:
+  container_name: web
   web:
     build: .
     ports:
