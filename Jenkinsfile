@@ -8,7 +8,7 @@ pipeline {
         TAGGED_NAME = 'gitpull_web' 
         IMAGE_NAME = 'test_webapp'
         CONTAINER_NAME = 'gitpull_web_1'
-        NAM = 'kivadratik/'
+        NAM = 'kivadratik'
         
         // git config
        //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
