@@ -1,15 +1,15 @@
 pipeline {
     agent any
-    //environment {
+    environment {
         // dockerhub config
-        //HUB_DOCKER_HOST ='https://index.docker.io/v1/'
-        //HUB_DOCKER_CREDS = credentials('45c2d5ab-a1ad-4b0d-a313-4e6dfcdfab53')
-        //IMAGE_NAME = 'test-app-jenkins'
+        HUB_DOCKER_HOST ='https://index.docker.io/v1/'
+        HUB_DOCKER_CREDS = credentials('9febe439-9a0f-4947-b972-4b79e1a5dd89')
+        IMAGE_NAME = 'gitpull_web_1'
         
         // git config
        //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
        // GITHUB_CREDS = credentials('8be32b57-7a12-41c1-a21a-b4c5507392c9')
-       // BUILD_VERSION = sh(returnStdout: true, script: 'git describe --long --always').trim()
+       BUILD_VERSION = sh(returnStdout: true, script: 'git describe --long --always').trim()
 
         // ssh prod config
         //SSH_HOST = "18.224.38.108"
@@ -53,19 +53,20 @@ pipeline {
             }
         }
 
-      //  stage('docker tag and push') {
-       //     steps {
-       //         script {
-       //             dockerVersionTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:${BUILD_VERSION}"
-       //             dockerLatestTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:latest"
-       //         }
+        stage('docker tag and push') {
+            steps {
+                script {
+                    dockerVersionTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:${BUILD_VERSION}"
+                    dockerLatestTag = "${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME}:latest"
+                }
+                  sh "echo 'dockerVersionTag'"
        //         sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerLatestTag}"
       //          sh "sudo docker tag ${HUB_DOCKER_CREDS_USR}/${IMAGE_NAME} ${dockerVersionTag}"
       //         sh "echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
        //         sh "sudo docker push ${dockerVersionTag}"
       //          sh "sudo docker push ${dockerLatestTag}"
        //     }
-       // }
+        }
         //stage('update prod server'){
         //    steps {
         //        script {
