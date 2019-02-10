@@ -24,7 +24,7 @@ pipeline {
             steps {
 				sh "echo 'I will clean all containers'"
 				//sh "docker stop `docker ps | grep gitpull_web | awk '{print $1}'` & docker rm `docker ps -a | grep gitpull_web | awk '{print $1}'`"
-                sh '(docker stop gitpull_web_1 && docker rm gitpull_web_1) || echo "No such container"'
+                sh '(docker stop ${IMAGE_NAME} && docker rm ${IMAGE_NAME}) || echo "No such container"'
 				// sh "sudo docker ps -a -q | xargs -r sudo docker stop"
                 // sh "sudo     docker ps -a -q | xargs -r sudo docker rm"
                 // sh 'sudo docker images | grep -v "postgres\\|python\\|nginx" | awk \'{print $3}\' | grep -v \'IMAGE\' | xargs -r sudo docker rmi --force'
@@ -63,8 +63,8 @@ pipeline {
                 }
                   sh "echo '${dockerLatestTag}'"
                   sh "echo '${dockerVersionTag}'" 
-                  sh "docker tag ${NAM}/${IMAGE_NAME} ${dockerLatestTag}"
-                  sh "docker tag ${NAM}/${IMAGE_NAME} ${dockerVersionTag}"
+                  sh "docker tag ${IMAGE_NAME} ${dockerLatestTag}"
+                  sh "docker tag ${IMAGE_NAME} ${dockerVersionTag}"
                   sh "echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
        //         sh "sudo docker push ${dockerVersionTag}"
       //          sh "sudo docker push ${dockerLatestTag}"
