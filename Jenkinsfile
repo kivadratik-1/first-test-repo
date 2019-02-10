@@ -17,7 +17,7 @@ pipeline {
         // ssh prod config
         SSH_HOST = "192.168.2.21"
         SSH_PORT = "22"
-        SSH_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
+        SSH_CREDS = credentials('6835ab31-5ba5-4a93-814b-6713e4b4160a')
 
         
     }
