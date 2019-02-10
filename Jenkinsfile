@@ -16,7 +16,7 @@ pipeline {
         //SSH_PORT = "22"
         //SSH_CREDS = credentials('AKIAJOJ7U6B4SZI25XXA')
 
-    //}
+    }
     stages {
         stage('clear all containers') {
             steps {
