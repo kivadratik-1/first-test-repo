@@ -66,8 +66,8 @@ pipeline {
                 }
                   sh "echo '${dockerLatestTag}'"
                   sh "echo '${dockerVersionTag}'" 
-                  sh "docker tag ${IMAGE_NAME} ${dockerLatestTag}"
-                  sh "docker tag ${IMAGE_NAME} ${dockerVersionTag}"
+                  sh "docker tag ${TAGGED_NAME} ${dockerLatestTag}"
+                  sh "docker tag ${TAGGED_NAME} ${dockerVersionTag}"
                   sh "echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}"
                   sh "docker push ${dockerVersionTag}"
                   sh "docker push ${dockerLatestTag}"
