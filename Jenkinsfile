@@ -83,8 +83,8 @@ pipeline {
                 sh "${SSH_CMD} 'docker-compose pull -f prod_docker-compose.yml'"
 		        sh "${SSH_CMD} 'docker-compose up -f prod_docker-compose.yml -d'"
 	   		    //sh "${SSH_CMD} 'sudo docker image prune -a --force'"
-        //    }
-        //}
+            }
+        }
 
     //}
     //post {
