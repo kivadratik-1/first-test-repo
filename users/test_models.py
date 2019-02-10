@@ -20,7 +20,7 @@ class GuestModelTest(TestCase):
     def test_simple_guest_name_max_length(self):
         guest=SimpleGuest.objects.get(simple_guest_id=1)
         max_length = guest._meta.get_field('simple_guest_name').max_length
-        self.assertEquals(max_length,200)
+        self.assertEquals(max_length,100)
 
 
 class TestSimpleGuest(TestCase):
