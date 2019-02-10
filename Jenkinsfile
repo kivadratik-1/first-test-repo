@@ -2,11 +2,13 @@ pipeline {
     agent any
     environment {
         // dockerhub config
-        HUB_DOCKER_HOST ='https://index.docker.io/v1/'
+        //HUB_DOCKER_HOST ='https://index.docker.io/v1/'
+        HUB_DOCKER_HOST ='https://cloud.docker.com/repository/docker/kivadratik/test'
         HUB_DOCKER_CREDS = credentials('b767963b-c7f6-4274-bccd-e98028d9ace3')
-        IMAGE_NAME = 'gitpull_web'
+        TAGGED_NAME = 'gitpull_web' 
+        IMAGE_NAME = 'test_webapp'
         CONTAINER_NAME = 'gitpull_web_1'
-        NAM = 'kivadratik/test'
+        NAM = 'kivadratik/'
         
         // git config
        //GITHUB_HOST = "gitlab.etton.ru/swish/swish-engine-app"
