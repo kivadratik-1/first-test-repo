@@ -70,9 +70,9 @@ pipeline {
                 sh "tar -czf deployment.tar.gz prod_docker-compose.yml"
                 sh "cat deployment.tar.gz | ${SSH_CMD} 'tar xzf - -C ~/'"
                 sh "${SSH_CMD} 'echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
-                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker stop'"
-                sh "${SSH_CMD} 'docker ps -a -q | xargs -r sudo docker rm'"
-                sh "${SSH_CMD} 'sudo docker volume prune --force'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r docker stop'"
+                sh "${SSH_CMD} 'docker ps -a -q | xargs -r docker rm'"
+                sh "${SSH_CMD} 'docker volume prune --force'"
                 sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml pull'"
                 sh "${SSH_CMD} 'docker-compose -f prod_docker-compose.yml up -d'"
                 sh "${SSH_CMD} 'docker image prune -a --force'"
@@ -85,13 +85,13 @@ pipeline {
                 }
                 sh "tar -czf deployment.tar.gz aws_docker-compose.yml"
                 sh "cat deployment.tar.gz | ${SSH_CMD_AWS} 'tar xzf - -C ~/'"
-                sh "${SSH_CMD_AWS} 'echo ${HUB_DOCKER_CREDS_PSW} | docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
-                sh "${SSH_CMD_AWS} 'docker ps -a -q | xargs -r sudo docker stop'"
-                sh "${SSH_CMD_AWS} 'docker ps -a -q | xargs -r sudo docker rm'"
+                sh "${SSH_CMD_AWS} 'sudo echo ${HUB_DOCKER_CREDS_PSW} | sudo docker login -u=${HUB_DOCKER_CREDS_USR} --password-stdin ${HUB_DOCKER_HOST}'"
+                sh "${SSH_CMD_AWS} 'sudo docker ps -a -q | xargs -r sudo docker stop'"
+                sh "${SSH_CMD_AWS} 'sudo docker ps -a -q | xargs -r sudo docker rm'"
                 sh "${SSH_CMD_AWS} 'sudo docker volume prune --force'"
-                sh "${SSH_CMD_AWS} 'docker-compose -f prod_docker-compose.yml pull'"
-                sh "${SSH_CMD_AWS} 'docker-compose -f prod_docker-compose.yml up -d'"
-                sh "${SSH_CMD_AWS} 'docker image prune -a --force'"
+                sh "${SSH_CMD_AWS} 'sudo docker-compose -f prod_docker-compose.yml pull'"
+                sh "${SSH_CMD_AWS} 'sudo docker-compose -f prod_docker-compose.yml up -d'"
+                sh "${SSH_CMD_AWS} 'sudo docker image prune -a --force'"
             }
         }
     }
