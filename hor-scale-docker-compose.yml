@@ -1,0 +1,56 @@
+# Docker-compose with nginx-proxy-load balanser and horyzontaly scalebility of application
+
+version: '2'
+
+
+services:
+    web1:
+        container_name: test_webapp_1
+        image: kivadratik/test_webapp:latest
+        volumes:
+         - "/var/db:/home/db"
+        restart: always
+        tty: true
+        stdin_open: true
+        networks:
+            web-local:
+                ipv4_address: 10.5.0.5
+    web2:
+        container_name: test_webapp_2
+        image: kivadratik/test_webapp:latest
+        volumes:
+         - "/var/db:/home/db"
+        restart: always
+        tty: true
+        stdin_open: true
+        networks:
+            web-local:
+                ipv4_address: 10.5.0.6
+
+
+
+    nginx-local:
+        image: nginx:latest
+        container_name: nginx-local
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx/conf:/etc/nginx/conf.d
+            - /var/log/nginx:/var/log/nginx
+            - ./../../:/var/www/engine
+        depends_on:
+            - web1
+            - web2
+        links:
+            - web1
+            - web2
+        restart: always
+        networks:
+            - web-local
+
+networks:
+    web-local:
+      ipam:
+        config:
+            - subnet: 10.5.0.0/16
+#driver: bridge
